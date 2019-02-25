@@ -3,6 +3,7 @@
 
 using namespace std;
 
+// m : °¡·Î Ä­ ¼ö, n : ¼¼·Î Ä­ ¼ö
 int m, n;
 int map[1001][1001];
 int check[1001][1001];
