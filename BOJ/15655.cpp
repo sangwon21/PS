@@ -15,7 +15,7 @@ void go(int idx, int start) {
 		return;
 	}
 	
-	for (int i = start; i <= N; i++) {
+	for (int i = start; i < N; i++) {
 		ans[idx] = arr[i];
 		go(idx + 1, i + 1);
 	}
@@ -24,13 +24,13 @@ void go(int idx, int start) {
 int main(void) {
 
 	std::cin >> N >> M;
-	for (int i = 1; i <= N; i++) {
+	for (int i = 0; i < N; i++) {
 		std::cin >> arr[i];
 	}
 
-	std::sort(arr + 1, arr + N + 1);
+	std::sort(arr, arr + N);
 
-	go(0, 1);
+	go(0, 0);
 
 	return 0;
 }
