@@ -1,59 +1,74 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include <iostream>
+#include <cstdio>
+#include <vector>
 #include <queue>
+#include <algorithm>
 #include <string.h>
 
-using namespace std;
+int N, M, V;
 
-int vertexes, lines, start;
-int map[1001][1001];
+std::vector<int> list[1001];
 bool check[1001];
 
-void dfs(int vertex) {
-	check[vertex] = true;
-	printf("%d ", vertex);
-	for (int i = 1; i < 1001; i++) {
-		if (map[vertex][i] == 1) {
-			if (check[i] == false) {
-				dfs(i);
-			}
+void dfs(int index)
+{
+	check[index] = true;
+	printf("%d ", index);
+	for (int i = 0; i < list[index].size(); i++)
+	{
+		int next = list[index][i];
+		if (check[next] == false)
+		{
+			dfs(next);
 		}
 	}
 }
 
-void bfs(int vertex) {
-	queue<int> q;
-	q.push(vertex);
-	check[vertex] = true;
-
-	while (!q.empty()) {
-		int newVertex = q.front();
-		q.pop();
-
-		for (int i = 1; i < 1001; i++) {
-			if (map[newVertex][i] == 1) {
-				if (check[i] == false) {
-					check[i] = true;
-					q.push(i);
-				}
-			}
-		}
-		printf("%d ", newVertex);
-	}
-}
-int main(void) {
-	
-	cin >> vertexes >> lines >> start;
-	int a, b;
-	for (int i = 0; i < lines; i++) {
-		cin >> a >> b;
-		map[a][b] = map[b][a] = 1;
-	}
-
-	dfs(start);
-	printf("\n");
+void bfs(int index)
+{
+	std::queue<int> q;
 	memset(check, false, sizeof(check));
-	bfs(start);
+
+	q.push(index);
+	check[index] = true;
+	while (!q.empty())
+	{
+		int current = q.front();
+		q.pop();
+		printf("%d ", current);
+		for (int i = 0; i < list[current].size(); i++)
+		{
+			int next = list[current][i];
+			if (check[next] == false)
+			{
+				check[next] = true;
+				q.push(next);
+			}
+		}
+	}
+}
+
+int main(void)
+{
+	std::cin >> N >> M >> V;
+
+	for (int i = 0; i < M; i++)
+	{
+		int a, b;
+		scanf("%d %d", &a, &b);
+		list[a].push_back(b);
+		list[b].push_back(a);
+	}
+
+	for (int i = 1; i < N; i++)
+	{
+		std::sort(list[i].begin(), list[i].end());
+	}
+
+	dfs(V);
 	printf("\n");
+	bfs(V);
 
 	return 0;
 }
